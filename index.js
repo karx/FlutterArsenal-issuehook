@@ -123,7 +123,7 @@ async function getNewRepo(user, repo) {
 }
 
 
-async function pubToFile(data, tag, excerpt) {
+async function pubToFile(data, tag, excerpt, teaser) {
     if (!data) {
         return;
     }
@@ -136,16 +136,17 @@ async function pubToFile(data, tag, excerpt) {
     md += addField('tag', tag);
     md += addField('excerpt', excerpt ? excerpt : '"' + data.repository.description.split('"').join('\'') + '"');
     // md += addField('excerpt', '"' + data.repository.description.split('"').join('\'') + '"');
+    md += addField('teaser', teaser);
     md += addField('github', `https://github.com/${data.repository.nameWithOwner}`);
     md += addField('license', {
         "name": data.repository.licenseInfo.name,
         "url": data.repository.licenseInfo.url,
     });
-    md += addField('rating', "5");
     md + addField('stars', data.repository.stargazers.totalCount);
     md + addField('watchers', data.repository.watchers.totalCount);
-    md + addField('commitComments', data.repository.watchers.totalCount);
-    md + addField('forkCount', data.repository.watchers.forkCount);
+    md + addField('commitComments', data.repository.commitComments.totalCount);
+    md + addField('forkCount', data.repository.forkCount);
+    md += addField('rating', calculateRating(data.repository.forkCount, data.repository.stargazers.totalCount, data.repository.watchers.totalCount));
 
     md += addField('version', "NA");
     // md += addField('last_updated', moment(data.repository.updatedAt).format("MMM DD, YYYY"));
@@ -450,10 +451,12 @@ async function parseIssueAndCommit(payload) {
     var github_resultArray = getGithubURLRx(body);
     var tag_resultArray = getTagRx(body);
     var excerpt_resultArray = getExcerptRx(body);
+    var teaser_resultArray = getTeaserRx(body);
 
     var github_url = github_resultArray[0].trim();
     var tag_result = tag_resultArray[0].trim();
     var excerpt_result = excerpt_resultArray[0].trim();
+    var teaser_result = teaser_resultArray[0].trim();
 
     var gitUrlSplit = github_url.split('/');
     var githubObj = await getNewRepo(gitUrlSplit[3], gitUrlSplit[4]);
@@ -468,7 +471,7 @@ Ping! @${githubObj.repository.owner.login}. Your project is now listed.
 Please help and support us in maintaining the biggest arsenal of Flutter weapons.
 [![Tip Me via PayPal](https://img.shields.io/badge/PayPal-tip%20me-green.svg?logo=paypal)](https://www.paypal.me/karx01)
         `;
-        pubToFile(githubObj, tag_result, excerpt_result);
+        pubToFile(githubObj, tag_result, excerpt_result, teaser_result);
         sendUpdateToIssue(payload, issueMsgToSend);
 
     }
@@ -555,4 +558,28 @@ async function sendWelcomeEmail(email) {
         });
         console.log(issueResponse);
     }
+}
+
+
+function calculateRating(forkCount, starCount, watchCount) {
+    var rating = 0;
+    forkCount += 1;
+    starCount += 1;
+    watchCount += 1;
+    var total = forkCount * starCount * watchCount;
+    if (total > 20) {
+        rating += 4.5
+    } else if (total > 10) {
+        rating += 4;
+    } else if (total > 6) {
+        rating += 3.5;
+    } else {
+        rating += 3;
+    }
+
+
+    if (forkCount > 2) {
+        rating += 0.5
+    }
+    return rating;
 }
