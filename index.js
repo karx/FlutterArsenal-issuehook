@@ -137,8 +137,8 @@ async function pubToFile(data, tag, excerpt, teaser) {
     md += addField('teaser', teaser);
     md += addField('github', `https://github.com/${data.repository.nameWithOwner}`);
     md += addField('license', {
-        "name": data.repository.licenseInfo.name,
-        "url": data.repository.licenseInfo.url,
+        "name": data.repository.licenseInfo ? data.repository.licenseInfo.name : "",
+        "url": data.repository.licenseInfo ? data.repository.licenseInfo.url : "",
     });
     md + addField('stars', data.repository.stargazers.totalCount);
     md + addField('watchers', data.repository.watchers.totalCount);
