@@ -10,7 +10,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 
-const FLUTTER_ARSENAL_GITHUB_PATH = "karx/FlutterArsenal";
+const FLUTTER_ARSENAL_GITHUB_PATH = "flutterarsenal/FlutterArsenal";
 
 let headers = {
     'Authorization': 'token ' + config.github_token,
@@ -22,8 +22,6 @@ github_graph_url = "https://api.github.com/graphql";
 const client = new GraphQLClient(github_graph_url, {
     headers: headers
 })
-
-var allRepos_test = ["VictorRancesCode/flutter_ibm_watson"];
 
 
 // Tell express to use the body-parser middleware and to not parse extended bodies
@@ -201,6 +199,7 @@ async function pubEventToFile(data) {
     md += addField('location', data.location);
     md += addField('tag', data.tag);
     md += addField('excerpt', data.excerpt);
+    md += addField('layout', 'fa_event');
     md += '---';
     md += '\n';
     console.log('printing');
