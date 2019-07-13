@@ -231,8 +231,8 @@ function addField(feildName, feildValue) {
         // console.log('treated string');
         return `${feildName}: ${feildValue}\n`;
     }
-
-    return stringToAdd;
+    console.log(`${feildName}: ${feildValue}\n`);
+    return `${feildName}: ${feildValue}\n`;
 }
 
 
