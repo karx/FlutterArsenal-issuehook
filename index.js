@@ -465,7 +465,7 @@ async function parseIssueAndCommit(payload) {
         console.log(github_url + ' seems invalid');
     else {
         var issueMsgToSend = `
-Congratulations! @${payload.sender.login} your request is now approved and live on [__FlutterArsenal__](https://flutterarsenal.com).
+Congratulations! @${payload.issue.login} your request is now approved and live on [__FlutterArsenal__](https://flutterarsenal.com).
 
 Ping! @${githubObj.repository.owner.login}. Your project is now listed.
 Please help and support us in maintaining the biggest arsenal of Flutter weapons.
