@@ -162,7 +162,7 @@ async function pubToFile(data, tag, excerpt, teaser, issue) {
     }));
 
     md += addField('registered_by', {
-        "image": issue.user.avatarUrl,
+        "image": issue.user.avatar_url,
         "url": issue.user.html_url,
         "on_date": moment(issue.created_at).format("MMM Do YY")
     });
