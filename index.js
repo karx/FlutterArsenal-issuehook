@@ -121,7 +121,7 @@ async function getNewRepo(user, repo) {
 }
 
 
-async function pubToFile(data, tag, excerpt, teaser) {
+async function pubToFile(data, tag, excerpt, teaser, issue) {
     if (!data) {
         return;
     }
@@ -162,9 +162,9 @@ async function pubToFile(data, tag, excerpt, teaser) {
     }));
 
     md += addField('registered_by', {
-        "image": "https://avatars3.githubusercontent.com/u/7826138?s=460&v=4",
-        "url": "https://github.com/karx",
-        "on_date": "July 3, 2019"
+        "image": issue.user.avatarUrl,
+        "url": issue.user.html_url,
+        "on_date": moment(issue.created_at).format("MMM Do YY")
     });
 
     md += addField('layout', 'fa_project');
@@ -260,6 +260,7 @@ async function commitToGithub(encodedMessage, filename, message = "") {
         "content": encodedMessage
     };
     console.log(params);
+    console.log(filename);
     return await request({
         method: 'put',
         url: `https://api.github.com/repos/${FLUTTER_ARSENAL_GITHUB_PATH}/contents/${filename}`,
@@ -470,7 +471,7 @@ Ping! @${githubObj.repository.owner.login}. Your project is now listed.
 Please help and support us in maintaining the biggest arsenal of Flutter weapons.
 [![Tip Me via PayPal](https://img.shields.io/badge/PayPal-tip%20me-green.svg?logo=paypal)](https://www.paypal.me/karx01)
         `;
-        pubToFile(githubObj, tag_result, excerpt_result, teaser_result);
+        pubToFile(githubObj, tag_result, excerpt_result, teaser_result, payload.issue);
         sendUpdateToIssue(payload, issueMsgToSend);
 
     }
