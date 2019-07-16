@@ -356,7 +356,7 @@ function parseIssueAndProcessProjectRequest(payload) {
         console.log(github_url + ' seems invalid');
     else {
         var issueMsgToSend = `
-Thank you @${payload.sender.login} for submitting a new weapon for the __FlutterArsenal__.
+Thank you @${payload.issue.user.login} for submitting a new weapon for the __FlutterArsenal__.
 The github repository: [_${gitUrlSplit[3]}/${gitUrlSplit[4]}_](${github_url}) is now awaiting approval from __admins__.
 
 Kudos to you for contributing! cc @all-contributors please add @${payload.sender.login} for content and ideas.
@@ -384,7 +384,7 @@ function parseIssueAndProcessEventRequest(payload) {
     var date_result = date_resultArray[0].trim();
 
         var issueMsgToSend = `
-Thank you @${payload.sender.login} for submitting a new battle ground for the __FlutterArsenal__.
+Thank you @${payload.issue.user.login} for submitting a new battle ground for the __FlutterArsenal__.
 The Event at web link: [Event link](${web_url}) on __${date_result}__ is now awaiting approval from __admins__.
 
 Kudos to you for contributing! cc @all-contributors please add @${payload.sender.login} for event organization and ideas.
@@ -465,7 +465,7 @@ async function parseIssueAndCommit(payload) {
         console.log(github_url + ' seems invalid');
     else {
         var issueMsgToSend = `
-Congratulations! @${payload.issue.login} your request is now approved and live on [__FlutterArsenal__](https://flutterarsenal.com).
+Congratulations! @${payload.issue.user.login} your request is now approved and live on [__FlutterArsenal__](https://flutterarsenal.com).
 
 Ping! @${githubObj.repository.owner.login}. Your project is now listed.
 Please help and support us in maintaining the biggest arsenal of Flutter weapons.
