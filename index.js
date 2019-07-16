@@ -125,11 +125,15 @@ async function pubToFile(data, tag, excerpt, teaser, issue) {
     if (!data) {
         return;
     }
+    var nameToPut = issue.title;
+    if( nameToPut.includes('[Request]')) {
+        nameToPut = getTitleRx(nameToPut)[0];
+    } 
     console.log("Done");
     // console.log(data);
     var md = '---\n';
-    md += addField('title', data.repository.name);
-    md += addField('name', data.repository.name);
+    md += addField('title', nameToPut);
+    md += addField('name', nameToPut);
     md += addField('category', "Free");
     md += addField('tag', tag);
     md += addField('excerpt', excerpt ? excerpt : '"' + data.repository.description.split('"').join('\'') + '"');
@@ -340,10 +344,20 @@ function checkNewIssueIsApproved(payload) {
 function parseIssueAndProcessProjectRequest(payload) {
     const body = payload.issue.body;
     var github_resultArray = getGithubURLRx(body);
+    console.log(github_resultArray);
+    
     var tag_resultArray = getTagRx(body);
+    console.log(tag_resultArray);
+    
     var excerpt_resultArray = getExcerptRx(body);
+    console.log(excerpt_resultArray);
+    
     var email_resultArray = getEmailRx(body);
+    console.log(email_resultArray);
+    
     var teaser_resultArray = getTeaserRx(body);
+    console.log(teaser_resultArray);
+    
 
     var github_url = github_resultArray[0].trim();
     var tag_result = tag_resultArray[0].trim();
@@ -402,49 +416,55 @@ function getGithubURLRx(body) {
     return github_resultArray;
 }
 function getWebURLRx(body) {
-    var web_re = /(?<=link:).*?(?=<!--)/gm;
+    var web_re = /(?<=link:).*?(?=[<!--,\n])/gm;
     var web_resultArray = web_re.exec(body);
     return web_resultArray;
 }
 
 function getTagRx(body) {
-    var tag_re = /(?<=tag:).*?(?=<!--)/s;
+    var tag_re = /(?<=tag:).*?(?=[<!--,\n])/s;
     var tag_resultArray = tag_re.exec(body);
     return tag_resultArray;
 }
 
 function getExcerptRx(body) {
-    var excerpt_re = /(?<=excerpt:).*?(?=<!--)/s;
+    var excerpt_re = /(?<=excerpt:).*?(?=[<!--,\n])/s;
     var excerpt_resultArray = excerpt_re.exec(body);
     return excerpt_resultArray;
 }
 
 function getEmailRx(body) {
-    var email_re = /(?<=email-id:).*?(?=<!--)/s;
+    var email_re = /(?<=email-id:).*?(?=[<!--,\n])/s;
     var email_resultArray = email_re.exec(body);
     return email_resultArray;
 }
 
 function getTeaserRx(body) {
-    var teaser_re = /(?<=teaser:).*?(?=<!--)/s;
+    var teaser_re = /(?<=teaser:).*?(?=[<!--,\n])/s;
     var teaser_resultArray = teaser_re.exec(body);
     return teaser_resultArray;
 }
 
 
 function getDateRx(body) {
-    var date_re = /(?<=date:).*?(?=<!--)/s;
+    var date_re = /(?<=date:).*?(?=[<!--,\n])/s;
     var date_resultArray = date_re.exec(body);
     return date_resultArray;
 }
 
 function getLocationRx(body) {
-    var location_re = /(?<=location:).*?(?=<!--)/s;
+    var location_re = /(?<=location:).*?(?=[<!--,\n])/s;
     var location_resultArray = location_re.exec(body);
     return location_resultArray;
 }
 
 
+
+function getTitleRx(title) {
+    var title_re = /(?<=\[Request\]).*/gm;
+    var title_resultArray = title_re.exec(title);
+    return title_resultArray;
+}
 async function parseIssueAndCommit(payload) {
     const body = payload.issue.body;
 
