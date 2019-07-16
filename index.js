@@ -344,10 +344,20 @@ function checkNewIssueIsApproved(payload) {
 function parseIssueAndProcessProjectRequest(payload) {
     const body = payload.issue.body;
     var github_resultArray = getGithubURLRx(body);
+    console.log(github_resultArray);
+    
     var tag_resultArray = getTagRx(body);
+    console.log(tag_resultArray);
+    
     var excerpt_resultArray = getExcerptRx(body);
+    console.log(excerpt_resultArray);
+    
     var email_resultArray = getEmailRx(body);
+    console.log(email_resultArray);
+    
     var teaser_resultArray = getTeaserRx(body);
+    console.log(teaser_resultArray);
+    
 
     var github_url = github_resultArray[0].trim();
     var tag_result = tag_resultArray[0].trim();
