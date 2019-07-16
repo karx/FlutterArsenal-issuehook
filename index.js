@@ -33,7 +33,7 @@ app.post('/issueNew', function (req, res) {
     const payloadJson = JSON.parse(payload);
     //   console.log(req);
     console.log(JSON.parse(payload)["action"]);
-    if (payloadJson.action === "opened") {
+    if (payloadJson.action === "opened" || payloadJson.action === "edited") {
         if (checkNewIssueIsProjectRequest(payloadJson)) {
             console.log("This is an issue to trigger project addition");
             parseIssueAndProcessProjectRequest(payloadJson);
