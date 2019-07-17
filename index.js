@@ -440,7 +440,7 @@ function getEmailRx(body) {
 }
 
 function getTeaserRx(body) {
-    var teaser_re = /(?<=teaser:).*?(?=[<!--,\n])/s;
+    var teaser_re = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:\/?#[\]@!\$&'\(\)\*\+,;=.]+(?:png|jpg|jpeg|gif|svg)+/s;
     var teaser_resultArray = teaser_re.exec(body);
     return teaser_resultArray;
 }
