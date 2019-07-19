@@ -390,12 +390,12 @@ function parseIssueAndProcessEventRequest(payload) {
     var teaser_resultArray = getTeaserRx(body);
     var date_resultArray = getDateRx(body);
 
-    var web_url = web_resultArray[0].trim();
-    var tag_result = tag_resultArray[0].trim();
-    var excerpt_result = excerpt_resultArray[0].trim();
-    var email_result = email_resultArray[0].trim();
-    var teaser_result = teaser_resultArray[0].trim();
-    var date_result = date_resultArray[0].trim();
+    var web_url = web_resultArray ? web_resultArray[0].trim() : "";
+    var tag_result = tag_resultArray ? tag_resultArray[0].trim() : "";
+    var excerpt_result = excerpt_resultArray ? excerpt_resultArray[0].trim() : "";
+    var email_result = email_resultArray ? email_resultArray[0].trim() : "";
+    var teaser_result = teaser_resultArray ? teaser_resultArray[0].trim() : "";
+    var date_result = date_resultArray ? date_resultArray[0].trim() : "";
 
         var issueMsgToSend = `
 Thank you @${payload.issue.user.login} for submitting a new battle ground for the __FlutterArsenal__.
@@ -473,10 +473,10 @@ async function parseIssueAndCommit(payload) {
     var excerpt_resultArray = getExcerptRx(body);
     var teaser_resultArray = getTeaserRx(body);
 
-    var github_url = github_resultArray[0].trim();
-    var tag_result = tag_resultArray[0].trim();
-    var excerpt_result = excerpt_resultArray[0].trim();
-    var teaser_result = teaser_resultArray[0].trim();
+    var github_url = github_resultArray? github_resultArray[0].trim() : "";
+    var tag_result = tag_resultArray? tag_resultArray[0].trim() : "";
+    var excerpt_result = excerpt_resultArray? excerpt_resultArray[0].trim() : "";
+    var teaser_result = teaser_resultArray? teaser_resultArray[0].trim() : "";
 
     var gitUrlSplit = github_url.split('/');
     var githubObj = await getNewRepo(gitUrlSplit[3], gitUrlSplit[4]);
@@ -511,12 +511,12 @@ async function parseEventAndCommit(payload) {
     var date_resultArray = getDateRx(body);
     var location_resultArray = getLocationRx(body);
 
-    var web_url = web_resultArray[0].trim();
-    var tag_result = tag_resultArray[0].trim();
-    var excerpt_result = excerpt_resultArray[0].trim();
-    var email_result = email_resultArray[0].trim();
-    var teaser_result = teaser_resultArray[0].trim();
-    var date_result = date_resultArray[0].trim();
+    var web_url = web_resultArray? web_resultArray[0].trim() :  "";
+    var tag_result = tag_resultArray? tag_resultArray[0].trim() :  "";
+    var excerpt_result = excerpt_resultArray? excerpt_resultArray[0].trim() :  "";
+    var email_result = email_resultArray? email_resultArray[0].trim() :  "";
+    var teaser_result = teaser_resultArray? teaser_resultArray[0].trim() :  "";
+    var date_result = date_resultArray? date_resultArray[0].trim() :  "";
     var location_result = location_resultArray ? location_resultArray[0].trim() : "";
 
     var issueMsgToSend = `
