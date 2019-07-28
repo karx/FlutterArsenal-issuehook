@@ -33,6 +33,7 @@ app.post('/issueNew', function (req, res) {
     const payloadJson = JSON.parse(payload);
     //   console.log(req);
     console.log(JSON.parse(payload)["action"]);
+    post_log_message('hit /issueNew', `action = ${payloadJson.action}\n Full payload =${payload}`);
     if (payloadJson.action === "opened" || payloadJson.action === "edited") {
         if (checkNewIssueIsProjectRequest(payloadJson)) {
             console.log("This is an issue to trigger project addition");
@@ -603,3 +604,22 @@ function calculateRating(forkCount, starCount, watchCount) {
     }
     return rating;
 }
+
+async function post_log_message(title, desc) {
+    let headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+    var msg = await request({
+        method: 'post',
+        url: config.discord_webhook,
+        form : JSON.stringify({ 
+            "content" : "FlutterArsenal-issuehook", 
+            "embeds" : [{
+                "title" : title,
+                "description" : JSON.stringify(desc)
+            }]
+        }),
+        headers: headers
+        // json: true
+    });
+    console.log(msg);
+}
+
