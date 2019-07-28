@@ -614,7 +614,8 @@ async function post_log_message(title, desc, url = "https://github.com/flutterar
             "content" : "FlutterArsenal-issuehook", 
             "embeds" : [{
                 "title" : title,
-                "description" : JSON.stringify(desc)
+                "description" : JSON.stringify(desc),
+                "url": url
             }]
         }),
         headers: headers
