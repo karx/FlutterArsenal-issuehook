@@ -33,7 +33,7 @@ app.post('/issueNew', function (req, res) {
     const payloadJson = JSON.parse(payload);
     //   console.log(req);
     console.log(JSON.parse(payload)["action"]);
-    post_log_message('hit /issueNew', `action = ${payloadJson.action}`);
+    post_log_message('hit /issueNew', `action = ${payloadJson.action}`, payloadJson.issue.html_url);
     if (payloadJson.action === "opened" || payloadJson.action === "edited") {
         if (checkNewIssueIsProjectRequest(payloadJson)) {
             console.log("This is an issue to trigger project addition");
@@ -605,7 +605,7 @@ function calculateRating(forkCount, starCount, watchCount) {
     return rating;
 }
 
-async function post_log_message(title, desc) {
+async function post_log_message(title, desc, url = "https://github.com/flutterarsenal/FlutterArsenal") {
     let headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
     var msg = await request({
         method: 'post',
