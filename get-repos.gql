@@ -1,0 +1,46 @@
+// https://developer.github.com/v4/explorer/
+/*
+  Query Varialbles: 
+  {
+    "queryString":  "language:Dart stars:>50",
+    "afterPointer": "Y3Vyc29yOjMw"
+  }
+*/
+
+query($queryString: String!,$afterPointer:String!){
+    search(query:$queryString , type: REPOSITORY, first: 10, after: $afterPointer) {
+      repositoryCount
+      edges {
+        node {
+          ... on Repository {
+            id
+            name
+            hasIssuesEnabled
+            homepageUrl
+            descriptionHTML
+            url
+            stargazers {
+              totalCount
+            }
+            forks {
+              totalCount
+            }
+            languages(first:5){
+              nodes{
+                name
+              }
+            }
+            updatedAt
+          }
+        }
+      }
+      pageInfo{
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+    }
+  }
+
+  
