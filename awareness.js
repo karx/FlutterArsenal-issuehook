@@ -111,7 +111,9 @@ async function postIssueToGithub(nameWithOwner, name) {
 
 
 function generateHTML(data) {
-    if (!data) {
+    console.log(data);
+    if (!data || !data.search || !data.search.edges) {
+        console.log('data seemed empty');
         return null;
     }
     var toShowHTML = '<ul>';
