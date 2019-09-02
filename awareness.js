@@ -87,26 +87,57 @@ async function next10() {
     return data;
 }
 
-async function postIssueToGithub(repositoryNode) {
+async function postIssueToGithub(nameWithOwner, name) {
     var headers = {
         'Authorization': 'token ' + config.github_token,
         "Accept": "application/vnd.github.symmetra-preview+json",
         'User-Agent': 'flutterArsenal-cli'
     };
     var params = {
-        "title": `Add ${repositoryNode.name} to Flutter Arsenal`,
-        "body": `${repositoryNode.name} can be added to FlutterArsenal to help with reach, accessibility and ease-of-use. [Flutter Arsenal](https://flutterarsenal.com) is a directory that is being curated for Flutter libraries and tool. The best way to do is by creating an issue on [github](https://github.com/flutterarsenal/FlutterArsenal/issues/new/choose).
+        "title": `Add ${name} to Flutter Arsenal`,
+        "body": `${name} can be added to FlutterArsenal to help with reach, accessibility and ease-of-use. [Flutter Arsenal](https://flutterarsenal.com) is a directory that is being curated for Flutter libraries and tool. The best way to do is by creating an issue on [github](https://github.com/flutterarsenal/FlutterArsenal/issues/new/choose).
         `
     };
     console.log(params);
     
     return await request({
         method: 'post',
-        url: `https://api.github.com/repos/${repositoryNode.nameWithOwner}/issues`,
+        url: `https://api.github.com/repos/${nameWithOwner}/issues`,
         body: params,
         headers: headers,
         json: true
     });
 }
 
-next10();
+
+function generateHTML(data) {
+    if (!data) {
+        return null;
+    }
+    var toShowHTML = '<ul>';
+    data.search.edges.forEach((eachNode) => {
+        var node = eachNode.node;
+        toShowHTML += '<li>';
+        toShowHTML += `<div class="name"> ${node.name} </div>`;
+        toShowHTML += `<div class="hasIssueEnabled"> hasIssueEnabled:  ${node.hasIssuesEnabled} </div>`;
+        toShowHTML += `<div class="homepageUrl"> <a href="${node.homepageUrl}"> ${node.homepageUrl} </a> </div>`;
+        toShowHTML += `<div class="url"> <a href="${node.url}"> ${node.nameWithOwner} </a> </div>`;
+        toShowHTML += `<div class="descriptionHTML"> ${node.descriptionHTML} </div>`;
+        toShowHTML += `<div class="stars"> Stars: ${node.stargazers.totalCount} </div>`;
+        toShowHTML += `<div class="forks"> Forks: ${node.forks.totalCount} </div>`;
+        toShowHTML += `<div class="updatedAt"> lastUpdated: ${node.updatedAt} </div>`;
+        toShowHTML += `<div class="button"> <a href="./awareness-post?name=${node.name}&nameWithOwner=${node.nameWithOwner}" target="_blank"> Submit Issue </a> </div>`;
+
+        toShowHTML += '</li>';
+    });
+    toShowHTML += '</ul>';
+    return toShowHTML;
+}
+// next10();
+
+module.exports = {
+    next10,
+    postIssueToGithub,
+    generateHTML
+}
+
