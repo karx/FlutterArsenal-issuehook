@@ -17,6 +17,7 @@ query($queryString: String!,$afterPointer:String!){
             name
             hasIssuesEnabled
             homepageUrl
+            nameWithOwner
             descriptionHTML
             url
             stargazers {
