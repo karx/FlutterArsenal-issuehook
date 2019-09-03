@@ -18,7 +18,7 @@ github_graph_url = "https://api.github.com/graphql";
 const client = new GraphQLClient(github_graph_url, {
     headers: headers
 })
-
+const FLUTTER_ARSENAL_GITHUB_PATH = "flutterarsenal/FlutterArsenal";
 
 async function getNewRepo(user, repo) {
     var dataToFetch =
