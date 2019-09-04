@@ -323,7 +323,7 @@ function parseIssueAndProcessProjectRequest(payload) {
     var tag_result = tag_resultArray[0].trim();
     var excerpt_result = excerpt_resultArray[0].trim();
     var email_result = email_resultArray[0].trim();
-    var teaser_result = teaser_resultArray[0].trim();
+    var teaser_result = teaser_resultArray ? teaser_resultArray[0].trim() : '';
 
     var gitUrlSplit = github_url.split('/');
     if (gitUrlSplit.length < 5)
@@ -336,6 +336,10 @@ The github repository: [_${gitUrlSplit[3]}/${gitUrlSplit[4]}_](${github_url}) is
 Kudos to you for contributing! cc @all-contributors please add @${payload.sender.login} for content and ideas.
         `;
         sendUpdateToIssue(payload, issueMsgToSend);
+    }
+    if (email_result) {
+        console.log(email_result);
+        sendWelcomeEmail(email_result);
     }
     console.log(github_url);
     console.log(tag_result);
@@ -506,31 +510,16 @@ async function sendWelcomeEmail(email) {
         var headers = {
             'Authorization': 'Bearer ' + config.sendgrid_key,
             'User-Agent': 'flutterArsenal-cli'
-
         };
-        var params = {
+        var body = {
 
-            "from": {
-                "email": "flutterarsenal@sendgrid.net"
-            },
-            "personalizations": [
-                {
-                    "to": [
-                        {
-                            "email": "kartik.arora1214@gmail.com"
-                        }
-                    ]
-                }
-            ],
-            "template_id": "d-3a75304e01854519a549467f4a1a88b4"
-
+            'toAddress': email
         };
-        console.log(params);
 
         var issueResponse = await request({
             method: 'post',
-            url: `https://api.sendgrid.com/v3/mail/send`,
-            body: params,
+            url: `http://emailer.akriya.co.in/new_email_flutter`,
+            body: body,
             headers: headers,
             json: true
         });
